@@ -33,14 +33,35 @@ jobs:
         with:
           node-version: 22
 
-      - name: Install & Build Backend
+      - name: Install Backend
         run: |
           cd backend
           npm install
-          npm run build
+
+      - name: Start Backend
+        run: |
+          cd backend
+          npm start &
+          echo "Waiting for backend to start..."
+          sleep 5
 
       - name: Install & Build Frontend
         run: |
           cd frontend
           npm install
+          npm run lint
           npm run build
+
+      - name: Start Frontend
+        run: |
+          cd frontend
+          npm run preview &
+          echo "Waiting for frontend to start..."
+          sleep 5
+
+      - name: Health Check
+        run: |
+          echo "Checking Backend Health..."
+          curl -f http://localhost:5000/ || exit 1
+          echo "Checking Frontend Health..."
+          curl -f http://localhost:4173/ || exit 1
