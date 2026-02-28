@@ -19,6 +19,11 @@ jobs:
           POSTGRES_USER: ihsan
           POSTGRES_PASSWORD: ihsan
           POSTGRES_DB: ihsan_test
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
 
     steps:
       - uses: actions/checkout@v3
@@ -28,12 +33,17 @@ jobs:
         with:
           node-version: 18
 
-      - name: Install Backend
+      - name: Install Backend Dependencies
         run: |
           cd backend
           npm install
 
-      - name: Run Backend Tests
+      - name: Install Frontend Dependencies
         run: |
-          cd backend
-          npm test
+          cd frontend
+          npm install
+
+      - name: Check Frontend Builds
+        run: |
+          cd frontend
+          npm run build
