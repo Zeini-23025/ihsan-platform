@@ -1,0 +1,26 @@
+{
+  "name": "desktop",
+  "version": "1.0.0",
+  "description": "",
+  "main": "out/main/index.js",
+  "scripts": {
+    "dev": "electron-vite dev --watch",
+    "build": "electron-vite build",
+    "preview": "electron-vite preview",
+    "start": "electron-vite dev"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "@electron-toolkit/preload": "^3.0.2",
+    "@electron-toolkit/utils": "^4.0.0",
+    "@types/node": "^25.3.2",
+    "electron": "^40.6.1",
+    "electron-vite": "^5.0.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3",
+    "vite-plugin-externalize-deps": "^0.10.0"
+  }
+}
