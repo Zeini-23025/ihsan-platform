@@ -26,24 +26,21 @@ jobs:
           --health-retries 5
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Setup Node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: 22
 
-      - name: Install Backend Dependencies
+      - name: Install & Build Backend
         run: |
           cd backend
           npm install
+          npm run build
 
-      - name: Install Frontend Dependencies
+      - name: Install & Build Frontend
         run: |
           cd frontend
           npm install
-
-      - name: Check Frontend Builds
-        run: |
-          cd frontend
           npm run build
