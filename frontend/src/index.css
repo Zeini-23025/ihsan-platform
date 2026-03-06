@@ -154,13 +154,13 @@ button { font-family: inherit; cursor: pointer; }
 input, textarea, select {
   font-family: Georgia, serif;
   font-size: 0.95rem;
-  background: #1C1F27;
+  background: var(--card); /* Was hardcoded #1C1F27 */
   border: 1.5px solid var(--border);
   border-radius: 8px;
   color: var(--text);
   padding: 0.65rem 1rem;
   width: 100%;
-  transition: border-color 0.2s, box-shadow 0.2s;
+  transition: border-color 0.2s, box-shadow 0.2s, background 0.3s, color 0.3s;
   outline: none;
 }
 input:focus, textarea:focus, select:focus {
