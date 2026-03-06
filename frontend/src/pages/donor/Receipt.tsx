@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, useLocation, useNavigate, Link } from 'react-router-dom';
+import { useParams, useLocation, Link } from 'react-router-dom';
 import { CheckCircle, Shield, Copy, Check, Mail, Search, Heart, ArrowRight } from 'lucide-react';
 import type { Need } from '../../types';
 
@@ -20,7 +20,6 @@ interface LocationState {
 const Receipt: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const location = useLocation();
-  const navigate = useNavigate();
   const state = location.state as LocationState | null;
 
   const [hash, setHash] = useState('');

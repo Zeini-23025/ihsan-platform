@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, NavLink, useNavigate, useLocation } from 'react-router-dom';
 import {
-  Bell, LogIn, LogOut, LayoutDashboard, Heart, User, Menu, X,
-  Sun, Moon, ChevronDown, Home, BookOpen, LayoutGrid,
+  Bell, LogIn, LogOut, LayoutDashboard, Heart, Menu, X,
+  Sun, Moon, ChevronDown, Home, LayoutGrid,
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { useTheme } from '../../context/ThemeContext';

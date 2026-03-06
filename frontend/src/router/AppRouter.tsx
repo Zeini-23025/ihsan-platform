@@ -49,12 +49,7 @@ const RequireRole: React.FC<{ roles: Role[] }> = ({ roles }) => {
   return <Outlet />;
 };
 
-// ─── RequireAuth guard (any authenticated user) ───────────────────────────────
-const RequireAuth: React.FC = () => {
-  const { isAuthenticated } = useAuth();
-  if (!isAuthenticated) return <Navigate to="/login" replace />;
-  return <Outlet />;
-};
+// (Removed unused RequireAuth guard to avoid unused declaration errors)
 
 // ─── AppRouter ────────────────────────────────────────────────────────────────
 const AppRouter: React.FC = () => (
