@@ -318,7 +318,7 @@ tbody tr:last-child td { border-bottom: none; }
 tbody tr:hover { background: var(--card-hover); }
 
 /* ─── Leaflet override ───────────────────────────────────────────────────────── */
-.leaflet-container { background: #1a1d24; border-radius: 12px; }
+.leaflet-container { background: var(--bg); border-radius: 12px; }
 .leaflet-popup-content-wrapper {
   background: var(--card);
   border: 1px solid var(--border);

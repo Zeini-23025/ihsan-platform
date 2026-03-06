@@ -1,9 +1,10 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import type { Need } from '../types';
 import StatusBadge from './StatusBadge';
+import { useTheme } from '../context/ThemeContext';
 
 // Fix default Leaflet marker icons (Vite breaks them)
 import iconRetinaUrl from 'leaflet/dist/images/marker-icon-2x.png';
@@ -46,6 +47,8 @@ const MapView: React.FC<MapViewProps> = ({
   center = DEFAULT_CENTER,
   zoom = 12,
 }) => {
+  const { theme } = useTheme();
+
   return (
     <div style={{ height, borderRadius: 12, overflow: 'hidden', border: '1px solid var(--border)' }}>
       <MapContainer
@@ -55,7 +58,9 @@ const MapView: React.FC<MapViewProps> = ({
         attributionControl={false}
       >
         <TileLayer
-          url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
+          url={theme === 'dark' 
+            ? "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png" 
+            : "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"}
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a> &copy; <a href="https://carto.com/">CARTO</a>'
         />
         {needs.map(need => (
