@@ -7,7 +7,6 @@ import {
 import { getPublicNeeds } from '../service/needs.service';
 import type { Need } from '../types';
 import NeedCard from '../components/NeedCard';
-import api from '../service/api';
 
 // ─── Stats live from API ──────────────────────────────────────────────────────
 interface Stats {
@@ -18,20 +17,12 @@ interface Stats {
 
 const LandingPage: React.FC = () => {
   const [needs, setNeeds] = useState<Need[]>([]);
-  const [stats, setStats] = useState<Stats>({ totalRaised: 0, confirmedNeeds: 0, activeValidators: 0 });
+  const [stats] = useState<Stats>({ totalRaised: 0, confirmedNeeds: 0, activeValidators: 0 });
   const howRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     getPublicNeeds(1, 3).then(r => setNeeds(r.data)).catch(() => {});
-    // Fetch stats
-    api.get('/public/stats').then(r => {
-      const d = r.data?.data || r.data;
-      setStats({
-        totalRaised: d?.totalCollected || d?.totalRaised || d?.total_raised || 0,
-        confirmedNeeds: d?.confirmedNeeds || d?.confirmed_needs || d?.totalConfirmed || 0,
-        activeValidators: d?.activeValidators || d?.active_validators || d?.totalValidators || 0,
-      });
-    }).catch(() => {});
+    // /public/stats does not exist in the backend - stats default to 0
   }, []);
 
   const scrollToHow = (e: React.MouseEvent) => {
@@ -50,7 +41,7 @@ const LandingPage: React.FC = () => {
             Faire le bien avec<br />
             <span style={styles.heroGold}>excellence</span>
           </h1>
-          <p className="arabic" style={styles.heroArabic}>
+          <p className="arabic" style={{ ...styles.heroArabic, textAlign: 'center', width: '100%' }}>
             إِنَّ اللَّهَ يَأْمُرُ بِالْعَدْلِ وَالْإِحْسَانِ
           </p>
           <p style={styles.heroSub}>
@@ -290,7 +281,7 @@ const LandingPage: React.FC = () => {
       {/* ─── Final CTA ────────────────────────────────────────────────────── */}
       <section className="section" style={{ background: 'linear-gradient(135deg, #16191F, #0F1117)', textAlign: 'center', borderTop: '1px solid var(--border)' }}>
         <div className="container">
-          <p className="arabic" style={{ fontSize: '1.4rem', marginBottom: '1rem', color: '#fff' }}>
+          <p className="arabic" style={{ fontSize: '1.4rem', marginBottom: '1rem', color: '#fff', textAlign: 'center', width: '100%' }}>
             وَأَحْسِنُوا ۛ إِنَّ اللَّهَ يُحِبُّ الْمُحْسِنِينَ
           </p>
           <h2 style={{ marginBottom: '1rem', color: '#fff' }}>Prêt à faire une différence&nbsp;?</h2>

@@ -83,11 +83,11 @@ const PartnerDashboard: React.FC = () => {
                   {new Date(need.createdAt).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long' })}
                   {need.validateur && ` · Validateur : ${need.validateur.nom} ${need.validateur.prenom}`}
                 </div>
-                <ProgressBar raised={need.amountRaised ?? 0} total={need.amount} showLabels={false} height={5} />
+                <ProgressBar raised={need.amountRaised || 0} total={need.amount || 1} showLabels={false} height={5} />
               </div>
               <div style={{ textAlign: 'right', flexShrink: 0 }}>
                 <div style={{ color: 'var(--gold)', fontWeight: 700, marginBottom: '0.35rem' }}>
-                  {need.amount.toLocaleString('fr-MR')} MRU
+                  {(need.amount || 0).toLocaleString('fr-MR')} MRU
                 </div>
                 <StatusBadge status={need.status} size="sm" />
               </div>

@@ -1,6 +1,6 @@
 // ─── Enums / Literals ────────────────────────────────────────────────────────
 export type Role = 'DONNEUR' | 'VALIDATEUR' | 'PARTENAIRE' | 'ADMIN';
-export type NeedStatus = 'OPEN' | 'FUNDED' | 'DELIVERING' | 'CONFIRMED';
+export type NeedStatus = 'PENDING' | 'OPEN' | 'FUNDED' | 'DELIVERING' | 'CONFIRMED';
 export type BusinessType = 'RESTAURANT' | 'ONG' | 'AUTRE';
 
 // ─── Auth ─────────────────────────────────────────────────────────────────────

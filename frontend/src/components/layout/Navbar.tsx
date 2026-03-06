@@ -59,17 +59,17 @@ const Navbar: React.FC = () => {
 
   const isActive = (path: string) => location.pathname === path;
 
-  const navLinks = [
-    { to: '/', label: 'Accueil', icon: <Home size={15} /> },
-    { to: '/catalog', label: 'Catalogue', icon: <LayoutGrid size={15} /> },
-    { to: '/dashboard', label: 'Tableau de bord', icon: <LayoutDashboard size={15} /> },
-  ];
+  const roleLinks: { to: string; label: string }[] = [];
+  // Nav links are hidden for roles that have their own sidebar navigation
+  const hiddenRoles = ['ADMIN', 'PARTENAIRE'];
+  const showNavLinks = !user || !hiddenRoles.includes(user.role || '');
 
-  const roleLinks = isAuthenticated ? [
-    user?.role === 'VALIDATEUR' ? { to: '/validator', label: 'Mes missions' } : null,
-    user?.role === 'PARTENAIRE' ? { to: '/partner', label: 'Espace partenaire' } : null,
-    user?.role === 'ADMIN' ? { to: '/admin', label: 'Admin' } : null,
-  ].filter(Boolean) as { to: string; label: string }[] : [];
+  const navLinks = [
+    { to: '/', label: 'Accueil' },
+    { to: '/catalog', label: 'Catalogue' },
+    { to: '/dashboard', label: 'Tableau de bord' },
+    ...(user?.role === 'VALIDATEUR' ? [{ to: '/validator', label: 'Mes missions' }] : []),
+  ];
 
   return (
     <>
@@ -81,9 +81,9 @@ const Navbar: React.FC = () => {
             <span>IHSAN</span>
           </Link>
 
-          {/* Desktop links */}
-          <div style={styles.desktopLinks}>
-            {navLinks.map(({ to, label }) => (
+          {/* Desktop links — hidden for Admin / Partenaire */}
+          <div style={styles.desktopLinks} className="navbar-desktop-links">
+            {showNavLinks && navLinks.map(({ to, label }) => (
               <NavLink
                 key={to}
                 to={to}
@@ -94,19 +94,7 @@ const Navbar: React.FC = () => {
                 })}
               >
                 {label}
-                {isActive(to === '/' ? '/' : to) && <span style={styles.activeLine} />}
-              </NavLink>
-            ))}
-            {roleLinks.map(({ to, label }) => (
-              <NavLink
-                key={to}
-                to={to}
-                style={({ isActive }) => ({
-                  ...styles.link,
-                  ...(isActive ? styles.linkActive : {}),
-                })}
-              >
-                {label}
+                {isActive(to) && <span style={styles.activeLine} />}
               </NavLink>
             ))}
           </div>
@@ -114,20 +102,20 @@ const Navbar: React.FC = () => {
           {/* Right actions */}
           <div style={styles.right}>
             {/* Theme toggle */}
-            <button style={styles.iconBtn} onClick={toggleTheme} title="Changer le thème" aria-label="Thème">
+            <button style={styles.iconBtn} className="navbar-icon-btn" onClick={toggleTheme} title="Changer le thème" aria-label="Thème">
               {theme === 'dark' ? <Sun size={17} /> : <Moon size={17} />}
             </button>
 
             {!isAuthenticated ? (
-              <Link to="/login" style={styles.loginBtn}>
+              <Link to="/login" style={styles.loginBtn} className="navbar-login navbar-login-btn">
                 <LogIn size={15} />
                 Se connecter
               </Link>
             ) : (
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }} className="navbar-right-auth">
                 {/* Bell */}
                 <div style={{ position: 'relative' }} ref={notifRef}>
-                  <button style={styles.iconBtn} onClick={() => setNotifOpen(o => !o)} aria-label="Notifications">
+                  <button style={styles.iconBtn} className="navbar-icon-btn" onClick={() => setNotifOpen(o => !o)} aria-label="Notifications">
                     <Bell size={17} />
                     {unread > 0 && <span style={styles.badge}>{unread}</span>}
                   </button>
@@ -139,6 +127,7 @@ const Navbar: React.FC = () => {
                       ) : (
                         notifications.slice(0, 8).map(n => (
                           <div key={n.id}
+                            className="navbar-notif-item"
                             style={{ ...styles.notifItem, opacity: n.isRead ? 0.5 : 1 }}
                             onClick={() => {
                               markAsRead(n.id).then(() =>
@@ -157,23 +146,23 @@ const Navbar: React.FC = () => {
 
                 {/* Avatar */}
                 <div style={{ position: 'relative' }} ref={userMenuRef}>
-                  <button style={styles.avatar} onClick={() => setUserMenuOpen(o => !o)}>
+                  <button style={styles.avatar} className="navbar-avatar" onClick={() => setUserMenuOpen(o => !o)}>
                     <span style={styles.avatarInitial}>{displayName.charAt(0).toUpperCase()}</span>
                     <span style={styles.avatarName}>{displayName}</span>
                     <ChevronDown size={13} style={{ color: 'var(--text-secondary)', flexShrink: 0 }} />
                   </button>
                   {userMenuOpen && (
                     <div style={{ ...styles.dropdown, right: 0, left: 'auto', minWidth: '200px' }}>
-                      <Link to={getDashboardPath()} style={styles.dropdownItem} onClick={() => setUserMenuOpen(false)}>
+                      <Link to={getDashboardPath()} style={styles.dropdownItem} className="navbar-dropdown-item" onClick={() => setUserMenuOpen(false)}>
                         <LayoutDashboard size={14} /> Mon espace
                       </Link>
                       {user?.role === 'DONNEUR' && (
-                        <Link to="/my-donations" style={styles.dropdownItem} onClick={() => setUserMenuOpen(false)}>
+                        <Link to="/my-donations" style={styles.dropdownItem} className="navbar-dropdown-item" onClick={() => setUserMenuOpen(false)}>
                           <Heart size={14} /> Mes dons
                         </Link>
                       )}
                       <hr style={{ border: 'none', borderTop: '1px solid var(--border)', margin: '0.25rem 0' }} />
-                      <button style={{ ...styles.dropdownItem, color: '#e07070', width: '100%', textAlign: 'left', background: 'none', border: 'none', cursor: 'pointer' }} onClick={handleLogout}>
+                      <button style={{ ...styles.dropdownItem, color: '#e07070', width: '100%', textAlign: 'left', background: 'none', border: 'none', cursor: 'pointer' }} className="navbar-dropdown-item" onClick={handleLogout}>
                         <LogOut size={14} /> Se déconnecter
                       </button>
                     </div>
@@ -183,7 +172,7 @@ const Navbar: React.FC = () => {
             )}
 
             {/* Mobile hamburger */}
-            <button style={styles.hamburger} onClick={() => setMobileOpen(o => !o)} aria-label="Menu mobile">
+            <button style={styles.hamburger} className="navbar-hamburger" onClick={() => setMobileOpen(o => !o)} aria-label="Menu mobile">
               {mobileOpen ? <X size={22} /> : <Menu size={22} />}
             </button>
           </div>
@@ -208,6 +197,7 @@ const Navbar: React.FC = () => {
                 <Link
                   key={to}
                   to={to}
+                  className="navbar-drawer-link"
                   style={{ ...styles.drawerLink, ...(isActive(to) ? styles.drawerLinkActive : {}) }}
                   onClick={() => setMobileOpen(false)}
                 >
@@ -218,6 +208,7 @@ const Navbar: React.FC = () => {
                 <Link
                   key={to}
                   to={to}
+                  className="navbar-drawer-link"
                   style={{ ...styles.drawerLink, ...(isActive(to) ? styles.drawerLinkActive : {}) }}
                   onClick={() => setMobileOpen(false)}
                 >
@@ -228,25 +219,25 @@ const Navbar: React.FC = () => {
               <hr style={{ border: 'none', borderTop: '1px solid var(--border)', margin: '0.5rem 0' }} />
 
               {/* Theme + Auth in drawer */}
-              <button style={styles.drawerLink} onClick={() => { toggleTheme(); setMobileOpen(false); }}>
+              <button style={styles.drawerLink} className="navbar-drawer-link" onClick={() => { toggleTheme(); setMobileOpen(false); }}>
                 {theme === 'dark' ? <><Sun size={15} /> Mode clair</> : <><Moon size={15} /> Mode sombre</>}
               </button>
 
               {!isAuthenticated ? (
-                <Link to="/login" onClick={() => setMobileOpen(false)} style={{ ...styles.drawerLink, color: 'var(--gold)' }}>
+                <Link to="/login" onClick={() => setMobileOpen(false)} style={{ ...styles.drawerLink, color: 'var(--gold)' }} className="navbar-drawer-link">
                   <LogIn size={15} /> Se connecter
                 </Link>
               ) : (
                 <>
-                  <Link to={getDashboardPath()} style={styles.drawerLink} onClick={() => setMobileOpen(false)}>
+                  <Link to={getDashboardPath()} style={styles.drawerLink} className="navbar-drawer-link" onClick={() => setMobileOpen(false)}>
                     <LayoutDashboard size={15} /> Mon espace
                   </Link>
                   {user?.role === 'DONNEUR' && (
-                    <Link to="/my-donations" style={styles.drawerLink} onClick={() => setMobileOpen(false)}>
+                    <Link to="/my-donations" style={styles.drawerLink} className="navbar-drawer-link" onClick={() => setMobileOpen(false)}>
                       <Heart size={15} /> Mes dons
                     </Link>
                   )}
-                  <button style={{ ...styles.drawerLink, color: '#e07070', background: 'none', border: 'none', width: '100%', cursor: 'pointer', textAlign: 'left' }} onClick={handleLogout}>
+                  <button style={{ ...styles.drawerLink, color: '#e07070', background: 'none', border: 'none', width: '100%', cursor: 'pointer', textAlign: 'left' }} className="navbar-drawer-link" onClick={handleLogout}>
                     <LogOut size={15} /> Se déconnecter
                   </button>
                 </>

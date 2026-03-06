@@ -52,15 +52,26 @@ const CreateNeed: React.FC = () => {
         exactLng: zone.lng,
         email_partenaire: form.email_partenaire,
         beneficiary_name: form.beneficiary_name,
-        phone_beneficiary: form.phone_beneficiary,
-        email_beneficiary: form.email_beneficiary,
+        // Backend expects integer for phone
+        phone_beneficiary: parseInt(form.phone_beneficiary.replace(/\D/g, ''), 10) as unknown as string,
+        // email_beneficiary is required by backend even though optional in UI
+        email_beneficiary: form.email_beneficiary || form.email_partenaire,
       };
       await createNeed(data);
       addToast('Besoin publié avec succès !', 'success');
       navigate('/validator');
     } catch (err: unknown) {
-      const msg = (err as { response?: { data?: { message?: string } } })?.response?.data?.message
-        || 'Erreur lors de la création du besoin.';
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const raw = (err as any)?.response?.data;
+      const errorsArr = Array.isArray(raw) ? raw : raw?.errors;
+      let msg = 'Erreur lors de la création du besoin.';
+      if (errorsArr?.length) {
+        msg = errorsArr.map((e: { field?: string; message: string }) =>
+          e.field ? `${e.field}: ${e.message}` : e.message
+        ).join(' | ');
+      } else if (raw?.message) {
+        msg = raw.message;
+      }
       setError(msg);
       addToast(msg, 'error');
     } finally {
