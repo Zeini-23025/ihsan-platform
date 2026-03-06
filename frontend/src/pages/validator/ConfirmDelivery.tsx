@@ -39,8 +39,17 @@ const ConfirmDelivery: React.FC = () => {
       addToast('Remise confirmée avec succès !', 'success');
       setSuccess(true);
     } catch (err: unknown) {
-      const msg = (err as { response?: { data?: { message?: string } } })?.response?.data?.message
-        || 'Erreur lors de la confirmation. Réessayez.';
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const raw = (err as any)?.response?.data;
+      const errorsArr = Array.isArray(raw) ? raw : raw?.errors;
+      let msg = 'Erreur lors de la confirmation. Réessayez.';
+      if (errorsArr?.length) {
+        msg = errorsArr.map((e: { field?: string; message: string }) =>
+          e.field ? `${e.field}: ${e.message}` : e.message
+        ).join(' | ');
+      } else if (raw?.message) {
+        msg = raw.message;
+      }
       setError(msg);
       addToast(msg, 'error');
     } finally {

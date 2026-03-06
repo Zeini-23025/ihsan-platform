@@ -15,18 +15,18 @@ const PublicDashboard: React.FC = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    Promise.all([
-      getPublicNeeds(1, 20, undefined, 'CONFIRMED'),
-      api.get('/public/stats').catch(() => ({ data: {} })),
-    ]).then(([needsRes, statsRes]) => {
-      setConfirmedNeeds(needsRes.data);
-      const d = statsRes.data?.data || statsRes.data;
-      setStats({
-        totalRaised: d?.totalCollected || d?.totalRaised || 0,
-        confirmedNeeds: d?.confirmedNeeds || d?.confirmed_needs || needsRes.total || 0,
-        activeValidators: d?.activeValidators || 0,
-      });
-    }).catch(() => {}).finally(() => setLoading(false));
+    getPublicNeeds(1, 20, undefined, 'CONFIRMED')
+      .then((needsRes) => {
+        setConfirmedNeeds(needsRes.data);
+        // /public/stats doesn't exist - derive what we can from needs data
+        setStats({
+          totalRaised: (needsRes.data as any[]).reduce((sum: number, n: any) => sum + (n.amount || 0), 0),
+          confirmedNeeds: needsRes.total || needsRes.data.length,
+          activeValidators: 0,
+        });
+      })
+      .catch(() => {})
+      .finally(() => setLoading(false));
   }, []);
 
   const verifyHash = async () => {

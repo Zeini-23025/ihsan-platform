@@ -15,9 +15,6 @@ const Footer: React.FC = () => {
             <p style={styles.tagline}>
               Faire le bien avec excellence,<br />comme si tu voyais ce que tu accomplis.
             </p>
-            <p className="arabic" style={{ fontSize: '1.05rem', marginTop: '0.75rem' }}>
-              إِنَّ اللَّهَ يَأْمُرُ بِالْعَدْلِ وَالْإِحْسَانِ
-            </p>
           </div>
 
           {/* Navigation */}
@@ -50,7 +47,7 @@ const Footer: React.FC = () => {
           <p style={{ color: 'var(--text-secondary)', fontSize: '0.85rem' }}>
             © {new Date().getFullYear()} IHSAN — Plateforme de charité numérique · Mauritanie
           </p>
-          <p className="arabic" style={{ fontSize: '0.9rem' }}>
+          <p className="arabic" style={{ fontSize: '0.9rem', textAlign: 'center', width: '100%', marginTop: '0.5rem' }}>
             وَمَا تُنفِقُوا مِنْ خَيْرٍ فَلِأَنفُسِكُمْ ۚ وَمَا تُنفِقُونَ إِلَّا ابْتِغَاءَ وَجْهِ اللَّهِ
           </p>
         </div>
@@ -88,7 +85,8 @@ const styles: Record<string, React.CSSProperties> = {
   link: { color: 'var(--text-secondary)', fontSize: '0.9rem', transition: 'color 0.2s' },
   bottom: {
     display: 'flex', flexWrap: 'wrap',
-    justifyContent: 'space-between', alignItems: 'center', gap: '1rem',
+    justifyContent: 'center', alignItems: 'center', gap: '1rem',
+    textAlign: 'center',
   },
 };
 

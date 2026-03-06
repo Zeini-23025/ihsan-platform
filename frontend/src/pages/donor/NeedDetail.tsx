@@ -84,7 +84,7 @@ const NeedDetail: React.FC = () => {
   );
 
   const raised = need.amountRaised ?? 0;
-  const canFinance = need.status === 'OPEN';
+  const canFinance = need.status === 'OPEN' || need.status === 'PENDING';
 
   return (
     <div style={{ maxWidth: 960, margin: '0 auto', padding: '2rem 1rem' }}>

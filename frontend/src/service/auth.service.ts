@@ -31,8 +31,15 @@ export const login = async (email: string, password: string): Promise<LoginRespo
     body: JSON.stringify({ email, password })
   });
   
-  const data = await response.json();
-  if (!response.ok) throw new Error(data.message || 'Login failed');
+  const body = await response.json();
+  if (!response.ok) {
+    // body may be {message: "..."} or [{field, message}]
+    const errMsg = body?.message || (Array.isArray(body) ? body.map((e: {message: string}) => e.message).join(', ') : 'Login failed');
+    throw new Error(errMsg);
+  }
+  // Backend wraps response: {message: "...", data: {token, role, ...}}
+  // Unwrap if necessary
+  const data: LoginResponse = body?.data || body;
   return data;
 };
 

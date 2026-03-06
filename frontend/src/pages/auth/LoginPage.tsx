@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { Mail, Lock, Eye, EyeOff, LogIn, AlertCircle, Loader2, Heart, User, Building2, Settings } from 'lucide-react';
+import { Mail, Lock, Eye, EyeOff, LogIn, AlertCircle, Loader2 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { login } from '../../service/auth.service';
 import type { Role } from '../../types';
@@ -45,12 +45,7 @@ const LoginPage: React.FC = () => {
     }
   };
 
-  const ROLES = [
-    { label: 'Donneur', icon: <Heart size={13} /> },
-    { label: 'Validateur', icon: <User size={13} /> },
-    { label: 'Partenaire', icon: <Building2 size={13} /> },
-    { label: 'Admin', icon: <Settings size={13} /> },
-  ];
+
 
   return (
     <div style={styles.page}>
@@ -138,19 +133,6 @@ const LoginPage: React.FC = () => {
           </p>
         </div>
 
-        {/* Role info */}
-        <div style={styles.roleInfo}>
-          <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '0.5rem' }}>
-            Accès selon votre rôle
-          </div>
-          <div style={styles.roles}>
-            {ROLES.map(r => (
-              <div key={r.label} style={styles.roleTag}>
-                {r.icon} {r.label}
-              </div>
-            ))}
-          </div>
-        </div>
       </div>
     </div>
   );
@@ -187,17 +169,6 @@ const styles: Record<string, React.CSSProperties> = {
     display: 'flex', alignItems: 'center',
   },
   divider: { display: 'flex', alignItems: 'center', margin: '1.5rem 0' },
-  roleInfo: {
-    marginTop: '1.5rem', padding: '1rem',
-    background: 'var(--bg)', borderRadius: 8, border: '1px solid var(--border)',
-  },
-  roles: { display: 'flex', flexWrap: 'wrap', gap: '0.4rem' },
-  roleTag: {
-    display: 'inline-flex', alignItems: 'center', gap: '0.3rem',
-    padding: '0.2rem 0.6rem', borderRadius: 999,
-    background: 'rgba(201,147,58,0.08)', color: 'var(--gold)',
-    fontSize: '0.78rem', border: '1px solid rgba(201,147,58,0.2)',
-  },
 };
 
 export default LoginPage;
