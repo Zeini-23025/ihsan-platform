@@ -100,4 +100,4 @@ npm run build
 ---
 *Created with ❤️ for the Ihsan Platform Team.*
 
-**Don't touch any file you don't have permission to touch , if you don't do respect that i will cut off your dick , evry one now his part** 
+**Don't touch any file you don't have permission to touch , if you don't do respect that i will cut off your hand , evry one now his part** 
